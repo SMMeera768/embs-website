@@ -21,7 +21,7 @@ It is a multi-page website with a matching admin panel, so chapter content (even
 
 ## What's in here
 
-```
+```text
 embs-website/
 ├── index.html              Home
 ├── about.html              About, vision, history, core team
@@ -37,6 +37,7 @@ embs-website/
 ├── announcements.html      Announcements             (loads from API)
 ├── contact.html            Contact form              (posts to API)
 │
+├── config.js               THE backend address — the only place it is set
 ├── navbar.css              Shared navbar, footer, home page styles
 ├── api.js                  Central fetch helper used by the module scripts
 ├── navbar.js               Navbar, mobile drawer, dropdowns
@@ -62,7 +63,7 @@ embs-website/
 
 The site is deliberately split in two, and the two halves deploy independently.
 
-```
+```text
 ┌──────────────────────────┐        HTTPS         ┌──────────────────────────┐
 │  Static site on Vercel   │  ──── fetch ────▶    │  Express API on Render   │
 │  HTML + CSS + JS         │                      │  Node + Mongoose         │
@@ -79,13 +80,15 @@ The site is deliberately split in two, and the two halves deploy independently.
 
 There is **no build step** for the website. The `.html`, `.css` and `.js` files are served exactly as they are, which is why Vercel needs no framework setting.
 
-Every page that loads live data sets the API address near the top of its `<head>`:
+The backend address lives in exactly one place, [`config.js`](config.js):
 
-```html
-<script>window.EMBS_API_BASE = 'https://embs-website.onrender.com/api';</script>
+```js
+window.EMBS_API_BASE = 'https://embs-website-89fl.onrender.com/api';
 ```
 
-If the API ever moves, that one line is what changes — in each HTML file.
+Every page, public and admin, loads that file before its own scripts. To point
+the whole site at a different backend, change that single line. Nothing else
+in the project hardcodes the URL.
 
 ---
 
@@ -122,7 +125,7 @@ Check it is alive:
 curl http://localhost:5000/api/health
 ```
 
-To point the website at your local API, change `window.EMBS_API_BASE` in the HTML files to `http://localhost:5000/api`. Localhost origins are already allowed by CORS.
+To point the website at your local API, change the one line in `config.js` to `http://localhost:5000/api`. Localhost origins are already allowed by CORS.
 
 > **Never commit `backend/.env`.** It holds live database and API credentials. It is already listed in `.gitignore`.
 
@@ -179,7 +182,7 @@ Every push to the `main` branch redeploys automatically. Pushes to other branche
 
 ## The backend API on Render
 
-The API already runs at `https://embs-website.onrender.com`. You only need this section if you are redeploying it.
+The API already runs at `https://embs-website-89fl.onrender.com`. You only need this section if you are redeploying it.
 
 ### Environment variables
 
@@ -264,7 +267,7 @@ Module scripts cannot load over `file://`. Serve the folder with `npx serve .` i
 Check the three `CLOUDINARY_*` variables on Render. If the credentials are wrong, the upload fails silently and the record is saved without an image.
 
 **Login fails with "Could not reach the server".**
-The API is probably asleep or redeploying. Open `https://embs-website.onrender.com/api/health` directly and wait for it to return `{"success":true}`.
+The API is probably asleep or redeploying. Open `https://embs-website-89fl.onrender.com/api/health` directly and wait for it to return `{"success":true}`.
 
 ---
 

@@ -42,3 +42,7 @@
 
 20. Noticed the Google Maps key on the contact page is unrestricted. [frontend] It is embedded in the HTML, which is normal and unavoidable for a browser key, but it accepts requests from any referrer including localhost. That means anyone can lift it and bill her Google Cloud account. It does mean the map will keep working after the move to Vercel with no changes, so this is worth fixing but not urgent.
 
+
+21. Stood up a second Render service under Steve's own account so the CORS fix is actually live. [backend] Her service deploys from her repo and neither of us can redeploy it, so the fix was sitting in git doing nothing. New service points at the same MongoDB and Cloudinary, so both backends serve identical data and nothing of hers breaks. Switched `config.js` over to it, which was a one line change now that the URL is not scattered across 34 files.
+
+22. Verified the deployed CORS behaviour properly rather than assuming. [backend] Vercel production and preview origins both get the origin echoed back, netlify still works so her existing setup is unaffected, and localhost is allowed. `evil.com` and the spoof `vercel.app.attacker.io` both come back with no allow-origin header, which is the correct rejection, the browser blocks the read. Also checked the credentialed path since admin login is a POST that triggers a preflight: OPTIONS returns 204 with allow-credentials, and a wrong password returns a clean 401 with CORS headers attached so the browser can actually read the error message instead of showing a generic network failure.
