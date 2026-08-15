@@ -209,3 +209,37 @@
   .pd-shell { padding: 1.75rem 1.15rem 3rem; }
   .pd-actions .pd-btn { width: 100%; }
 }
+
+/* ── Article detail (post.html) ───────────────── */
+.post-byline {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: rgba(200, 210, 240, 0.7);
+  margin-bottom: 0.5rem;
+}
+
+.post-byline strong { color: rgba(230, 235, 255, 0.95); font-weight: 600; }
+
+.post-lede {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: rgba(220, 228, 250, 0.9);
+  padding-left: 1rem;
+  border-left: 3px solid rgba(0, 169, 157, 0.5);
+  margin-bottom: 2rem;
+}
+
+.post-body {
+  font-family: var(--font-body);
+  font-size: 1.02rem;
+  line-height: 1.85;
+  color: rgba(210, 218, 245, 0.82);
+}
+
+/* Comfortable reading measure: long lines are hard to track back from. */
+.post-body p {
+  margin-bottom: 1.35rem;
+  max-width: 68ch;
+  overflow-wrap: anywhere;
+}

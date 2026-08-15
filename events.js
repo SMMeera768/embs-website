@@ -38,11 +38,11 @@
           <span class="ev-date">${fmtDate(ev.date)}</span>
           ${ev.mode ? `<span class="ev-mode">${ev.mode}</span>` : ''}
         </div>
-        <h3 class="ev-title">${ev.title}</h3>
+        <h3 class="ev-title"><a href="event.html?id=${encodeURIComponent(ev._id)}">${ev.title}</a></h3>
         <p class="ev-desc">${ev.description || ''}</p>
         <div class="ev-footer">
           ${ev.venue ? `<span class="ev-location">${ev.venue}</span>` : ''}
-          ${ev.registrationLink ? `<a href="${ev.registrationLink}" target="_blank" rel="noopener" class="act-btn act-btn--primary">Register</a>` : ''}
+          <a href="event.html?id=${encodeURIComponent(ev._id)}" class="act-btn act-btn--primary">View Details</a>
         </div>
       </div>`;
     return div;
