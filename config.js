@@ -10,6 +10,18 @@
 window.EMBS_API_BASE = 'https://embs-website-89fl.onrender.com/api';
 
 
+/* ── Social links ────────────────────────────────────────────
+   Fill these in with the chapter's real accounts. Any left empty
+   is hidden from the footer rather than shown as a dead link. */
+
+window.EMBS_SOCIAL = {
+  linkedin:  '',
+  instagram: '',
+  twitter:   '',
+  youtube:   '',
+};
+
+
 /* ── Nothing below here needs editing ───────────────────────── */
 
 /* When the site is opened from a local server, prefer a same-origin

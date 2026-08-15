@@ -67,7 +67,7 @@
       const items = json.data || json;
 
       if (!Array.isArray(items) || !items.length) {
-        grid.innerHTML = `<p style="color:rgba(200,210,230,0.5);text-align:center;grid-column:1/-1;padding:3rem;">No achievements yet.</p>`;
+        grid.innerHTML = `<p class="embs-empty">No achievements yet.</p>`;
         return;
       }
 
@@ -75,7 +75,7 @@
       const cards = items.map(item => { const c = buildCard(item); grid.appendChild(c); return c; });
       initFilters(cards);
     } catch {
-      grid.innerHTML = `<p style="color:rgba(200,210,230,0.5);text-align:center;grid-column:1/-1;padding:3rem;">Failed to load achievements.</p>`;
+      grid.innerHTML = `<p class="embs-empty">Failed to load achievements.</p>`;
     }
   }
 

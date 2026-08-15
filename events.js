@@ -129,7 +129,7 @@
       allCards = events.map(ev => { const card = buildCard(ev); grid.appendChild(card); return card; });
       renderPage();
     } catch {
-      grid.innerHTML = '<p style="color:rgba(200,210,255,0.5);text-align:center;grid-column:1/-1;padding:3rem;">Failed to load events.</p>';
+      grid.innerHTML = '<p class="embs-empty">Failed to load events.</p>';
     }
   }
 

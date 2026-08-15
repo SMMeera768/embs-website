@@ -390,3 +390,7 @@
   .blog-hero { padding: calc(60px + 44px + 2rem) 0.9rem 2.5rem; }
   .blog-hero-img { height: 200px; }
 }
+
+/* This page's content grid sits on a near-white section (luminance 246),
+   so the empty state needs dark text to stay readable. */
+.embs-empty { color: #4a4062; }

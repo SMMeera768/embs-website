@@ -115,7 +115,7 @@ import { apiGet } from './api.js';
   }
 
   function message(grid, text) {
-    grid.innerHTML = `<p class="proj-grid-message">${esc(text)}</p>`;
+    grid.innerHTML = `<p class="embs-empty">${esc(text)}</p>`;
   }
 
   async function init() {
@@ -141,7 +141,7 @@ import { apiGet } from './api.js';
       });
 
       const none = document.createElement('p');
-      none.className = 'proj-grid-message';
+      none.className = 'embs-empty';
       none.id = 'projectsNoMatch';
       none.hidden = true;
       none.textContent = 'No projects in this category yet.';

@@ -87,7 +87,7 @@
       const episodes = (json.data || json).sort((a, b) => b.episodeNumber - a.episodeNumber);
 
       if (!episodes.length) {
-        epGrid.innerHTML = `<p style="color:rgba(200,210,240,0.5);text-align:center;grid-column:1/-1;padding:3rem;">No episodes yet.</p>`;
+        epGrid.innerHTML = `<p class="embs-empty">No episodes yet.</p>`;
         return;
       }
 

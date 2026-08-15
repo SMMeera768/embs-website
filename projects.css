@@ -438,3 +438,7 @@
 }
 
 .proj-btn { min-height: 40px; }
+
+/* This page's content grid sits on a near-white section (luminance 246),
+   so the empty state needs dark text to stay readable. */
+.embs-empty { color: #4a4062; }

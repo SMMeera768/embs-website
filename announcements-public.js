@@ -70,7 +70,7 @@
       const items = json.data || json;
 
       if (!Array.isArray(items) || !items.length) {
-        grid.innerHTML = `<p style="color:rgba(200,210,230,0.5);text-align:center;grid-column:1/-1;padding:3rem;">No announcements yet.</p>`;
+        grid.innerHTML = `<p class="embs-empty">No announcements yet.</p>`;
         // hide featured section too
         const feat = document.getElementById('featured-notice');
         if (feat) feat.style.display = 'none';
@@ -99,7 +99,7 @@
         if (applyBtn) applyBtn.href = featured.link || '#';
       }
     } catch {
-      grid.innerHTML = `<p style="color:rgba(200,210,230,0.5);text-align:center;grid-column:1/-1;padding:3rem;">Failed to load announcements.</p>`;
+      grid.innerHTML = `<p class="embs-empty">Failed to load announcements.</p>`;
     }
   }
 

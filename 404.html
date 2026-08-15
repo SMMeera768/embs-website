@@ -3,27 +3,38 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Project Details &ndash; IEEE EMBS KPRIET</title>
+  <title>Page Not Found &ndash; IEEE EMBS KPRIET</title>
+  <meta name="description" content="The page you are looking for could not be found on the IEEE EMBS KPRIET student chapter site." />
+  <meta name="robots" content="noindex" />
+  <meta name="theme-color" content="#0a0e1a" />
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
   <link rel="manifest" href="site.webmanifest" />
-  <meta name="description" content="Details of a student research project from the IEEE EMBS Student Chapter at KPR Institute of Engineering and Technology." />
-  <meta property="og:title" content="Project Details &ndash; IEEE EMBS KPRIET" />
-  <meta property="og:description" content="Student research from the IEEE EMBS Student Chapter at KPRIET." />
-  <meta property="og:type" content="article" />
-  <meta name="twitter:card" content="summary_large_image" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="navbar.css" />
-  <link rel="stylesheet" href="projects.css" />
   <link rel="stylesheet" href="project.css" />
   <script src="config.js"></script>
+  <style>
+    .nf-wrap { max-width: 720px; margin: 0 auto; padding: 8rem 1.5rem 6rem; text-align: center; }
+    .nf-code {
+      font-family: var(--font-heading);
+      font-size: clamp(4rem, 18vw, 9rem);
+      font-weight: 700; line-height: 1;
+      background: linear-gradient(90deg, #6B2D8B, #00A99D);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      margin-bottom: 0.5rem;
+    }
+    .nf-title { font-family: var(--font-heading); font-size: clamp(1.4rem,4vw,2rem); color: #e8eaf6; margin-bottom: 0.85rem; }
+    .nf-text  { font-family: var(--font-body); font-size: 1rem; line-height: 1.7; color: rgba(210,218,245,0.75); margin-bottom: 2rem; }
+    .nf-links { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; }
+    @media (max-width: 520px) { .nf-links .pd-btn { width: 100%; } }
+  </style>
 </head>
 <body>
-<a class="skip-link" href="#project-main">Skip to main content</a>
-
+<a class="skip-link" href="#main-content">Skip to main content</a>
 
 <nav class="navbar" id="navbar">
   <div class="nav-inner">
@@ -92,27 +103,16 @@
   </div>
 </nav>
 
-<!-- ═══════════════════════════════════════
-     ANNOUNCEMENT BAR
-════════════════════════════════════════ -->
-<div class="announce-bar">
-  <div class="announce-label">Updates</div>
-  <div class="announce-track-wrap">
-    <div class="announce-track"></div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════
-     PROJECT DETAIL
-════════════════════════════════════════ -->
-<main id="project-main" tabindex="-1">
-  <div class="pd-shell">
-    <a class="pd-back" href="projects.html">&larr; All Projects</a>
-    <div id="projectDetail" aria-live="polite">
-      <div class="pd-state">
-        <p class="pd-state-title">Loading&hellip;</p>
-        <p>Fetching project details.</p>
-      </div>
+<main id="main-content" tabindex="-1">
+  <div class="nf-wrap">
+    <p class="nf-code">404</p>
+    <h1 class="nf-title">This page doesn&rsquo;t exist</h1>
+    <p class="nf-text">The link may be out of date, or the page may have been moved. Here are some places to try instead.</p>
+    <div class="nf-links">
+      <a class="pd-btn" href="index.html">Go to the homepage</a>
+      <a class="pd-btn pd-btn--ghost" href="events.html">Events</a>
+      <a class="pd-btn pd-btn--ghost" href="projects.html">Projects</a>
+      <a class="pd-btn pd-btn--ghost" href="contact.html">Contact</a>
     </div>
   </div>
 </main>
@@ -184,17 +184,6 @@
   </div>
 </footer>
 
-<!-- ═══════════════════════════════════════
-     BACK TO TOP
-════════════════════════════════════════ -->
-<button class="back-to-top" id="backToTop" aria-label="Back to top">
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-</button>
-
 <script src="navbar.js" defer></script>
-<script src="announceBar.js" defer></script>
-<script src="newsletter.js" defer></script>
-<script type="module" src="project.js"></script>
-
 </body>
 </html>

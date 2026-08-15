@@ -68,7 +68,7 @@ import { apiGet } from './api.js';
       const posts = res.data || res;
 
       if (!posts.length) {
-        grid.innerHTML = `<p style="color:rgba(200,210,255,0.5);text-align:center;grid-column:1/-1;padding:3rem;">No articles available yet.</p>`;
+        grid.innerHTML = `<p class="embs-empty">No articles available yet.</p>`;
         return;
       }
 
@@ -82,7 +82,7 @@ import { apiGet } from './api.js';
       initFilters(cards);
     } catch (err) {
       console.error('Failed to load blog posts:', err);
-      grid.innerHTML = `<p style="color:rgba(200,210,255,0.5);text-align:center;grid-column:1/-1;padding:3rem;">Failed to load articles. Please try again later.</p>`;
+      grid.innerHTML = `<p class="embs-empty">Failed to load articles. Please try again later.</p>`;
     }
   }
 

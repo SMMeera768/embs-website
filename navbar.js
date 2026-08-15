@@ -1,4 +1,27 @@
 document.addEventListener("DOMContentLoaded", function () {
+
+  /* ── Footer social links ───────────────────────────────────
+     The markup ships four icons pointing at "#". Rather than leave
+     dead links on every page, each is matched to its entry in
+     window.EMBS_SOCIAL and hidden when no URL is configured. */
+  (function wireSocialLinks() {
+    var config = window.EMBS_SOCIAL || {};
+    var icons = document.querySelectorAll(".footer-social-icon");
+
+    icons.forEach(function (icon) {
+      var label = (icon.getAttribute("aria-label") || "").toLowerCase();
+      var url = config[label];
+
+      if (url) {
+        icon.setAttribute("href", url);
+        icon.setAttribute("target", "_blank");
+        icon.setAttribute("rel", "noopener");
+      } else {
+        icon.hidden = true;
+      }
+    });
+  })();
+
   var navbar    = document.getElementById("navbar");
   var hamburger = document.getElementById("hamburger");
   var navLinks  = document.getElementById("navLinks");

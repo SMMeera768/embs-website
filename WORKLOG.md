@@ -56,3 +56,15 @@
 26. Ran the content seeder against the live database. [backend] Removed the 3 duplicate BioTech events and the 8 expired junk announcements, then seeded 3 blogs, 3 podcasts, 5 projects, 4 achievements and 3 announcements. The announcement ticker works for the first time.
 
 27. Found four pages that were pure hardcoded mockups. [frontend] podcast, gallery, achievements and announcements all had working data scripts sitting in the repo that were never added to the HTML. The podcast page in particular was showing six invented episodes and a fake featured guest called Dr. Ananya Raman, none of it from the database. Anything added through the admin panel simply never appeared on any of those four pages. Added the four missing script tags. They now render 3, 5, 4 and 3 records respectively, matching the database exactly.
+
+28. Cut the image payload by 90 percent. [frontend] `logo-cropped.png` was 468KB at 1689x904, loading on all 24 pages, and displayed at 46px tall. `embs-logo.png` was 481KB at 3375x3375. Resized both to 600px and re-encoded: 468KB became 32KB and 481KB became 11KB. Checked the result visually first, no quality loss.
+
+29. Added a favicon set, which the site had none of. [frontend] `/favicon.ico` returned a 404 and not one page referenced an icon, so every browser tab showed a blank sheet. Generated 16, 32, 180, 192 and 512 pixel icons from the square mark and wired them into all 24 pages, plus a web manifest so it installs sensibly on a phone home screen.
+
+30. Filled the empty footer logo. [frontend] Every page had a `div.footer-logo-placeholder`, an empty gradient square that was never given real artwork. Swapped it for the actual logo on all 12 pages.
+
+31. Dealt with 48 dead social links. [frontend] Four footer icons on twelve pages all pointed at `href="#"`. Since I have no idea what the chapter's real accounts are, they now read from `window.EMBS_SOCIAL` in config.js and hide themselves when no URL is set. She fills in one object and they appear, correctly configured with target and rel. Nothing dead ships in the meantime.
+
+32. Fixed empty states that were invisible. [frontend] The blog grid sits on a section with luminance 246, near white, and its "No articles available yet" message was `rgba(200,210,255,0.5)`, light text on a light background. Measured the actual background behind every content grid and found the same problem on projects, members and gallery. Replaced seven separate inline styles with one shared `.embs-empty` class, light text by default for the dark grids, overridden to dark text on the four pages whose grids sit on white.
+
+33. Added a real 404 page. [frontend] A mistyped URL was landing on Vercel's generic error page. There is now a branded one with the site's nav and footer and links back into the main sections.
