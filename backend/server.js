@@ -4,6 +4,9 @@ const express       = require('express');
 const cors          = require('cors');
 const path          = require('path');
 const cookieParser  = require('cookie-parser');
+const helmet        = require('helmet');
+const compression   = require('compression');
+const rateLimit     = require('express-rate-limit');
 const connectDB     = require('./config/database');
 const errorMiddleware = require('./middleware/errorMiddleware');
 
@@ -59,9 +62,47 @@ app.use(cors({
 }));
 
 /* ── Core Middleware ─────────────────────────── */
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+
+/* Render sits behind a proxy. Without this, express-rate-limit sees every
+   request as coming from the same proxy IP and would throttle all users
+   together instead of per visitor. */
+app.set('trust proxy', 1);
+
+/* Security headers. crossOriginResourcePolicy is relaxed because the API
+   serves images that the site loads from a different origin. */
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: 'cross-origin' },
+}));
+
+app.use(compression());
+
+/* JSON bodies are small here; a cap stops a huge payload tying up memory. */
+app.use(express.json({ limit: '1mb' }));
+app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 app.use(cookieParser());
+
+/* The admin panel is one shared password, so an unthrottled login endpoint is
+   an open invitation to guess it. Only failed attempts count toward the limit,
+   so a legitimate admin logging in repeatedly is unaffected. */
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 10,
+  skipSuccessfulRequests: true,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  message: { success: false, message: 'Too many login attempts. Please try again in 15 minutes.' },
+});
+
+app.use('/api/auth/login', loginLimiter);
+
+/* A wider limit for everything else, to blunt scraping and accidental loops. */
+app.use('/api', rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 600,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  message: { success: false, message: 'Too many requests. Please slow down.' },
+}));
 
 /* ── Static Uploads ──────────────────────────── */
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
