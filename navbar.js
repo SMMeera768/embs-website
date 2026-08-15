@@ -6,11 +6,18 @@ document.addEventListener("DOMContentLoaded", function () {
      window.EMBS_SOCIAL and hidden when no URL is configured. */
   (function wireSocialLinks() {
     var config = window.EMBS_SOCIAL || {};
-    var icons = document.querySelectorAll(".footer-social-icon");
+
+    // Footer icons and the contact page's larger social buttons.
+    var icons = document.querySelectorAll(".footer-social-icon, .contact-social-btn, [data-social]");
 
     icons.forEach(function (icon) {
-      var label = (icon.getAttribute("aria-label") || "").toLowerCase();
-      var url = config[label];
+      var key = icon.getAttribute("data-social") ||
+                (icon.getAttribute("aria-label") || "").toLowerCase();
+
+      // "Twitter / X" and similar labels need normalising to a config key.
+      key = key.replace(/\s*\/\s*x$/, '').replace(/[^a-z]/g, '');
+
+      var url = config[key];
 
       if (url) {
         icon.setAttribute("href", url);
@@ -19,6 +26,22 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         icon.hidden = true;
       }
+    });
+  })();
+
+  /* Back to top. This lived in ten separate page scripts, so on the pages
+     that load none of them (gallery, contact) the button did nothing. */
+  (function wireBackToTop() {
+    var btn = document.getElementById("backToTop");
+    if (!btn || btn.dataset.wired) return;
+    btn.dataset.wired = "1";
+
+    window.addEventListener("scroll", function () {
+      btn.classList.toggle("visible", window.scrollY > 400);
+    });
+
+    btn.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: "smooth" });
     });
   })();
 

@@ -33,9 +33,9 @@
         ${ep.description ? `<p class="pod-ep-desc">${ep.description}</p>` : ''}
         <div class="pod-ep-waveform" aria-hidden="true">${WAVE_BARS}</div>
         <div class="pod-ep-actions">
-          <a href="${ep.audioUrl || ep.spotifyUrl || '#'}" target="_blank" rel="noopener" class="pod-ep-btn pod-ep-btn--play">
-            ${PLAY_SVG} Play Episode
-          </a>
+          ${(ep.audioUrl || ep.spotifyUrl)
+            ? `<a href="${ep.audioUrl || ep.spotifyUrl}" target="_blank" rel="noopener" class="pod-ep-btn pod-ep-btn--play">${PLAY_SVG} Play Episode</a>`
+            : ''}
           ${ep.spotifyUrl ? `<a href="${ep.spotifyUrl}" target="_blank" rel="noopener" class="pod-ep-btn pod-ep-btn--spotify">${SPOTIFY_SVG} Spotify</a>` : ''}
         </div>
       </div>`;
@@ -68,7 +68,12 @@
     if (summary) summary.textContent = ep.description || '';
 
     const playBtn = card.querySelector('.pod-feat-btn--play');
-    if (playBtn) playBtn.href = ep.audioUrl || ep.spotifyUrl || '#';
+    if (playBtn) {
+      const playUrl = ep.audioUrl || ep.spotifyUrl;
+      playBtn.href = playUrl || '#';
+      // No audio uploaded yet, so hide it rather than offer a button to nowhere.
+      playBtn.hidden = !playUrl;
+    }
 
     const spotifyBtn = card.querySelector('.pod-feat-btn--spotify');
     if (spotifyBtn) {

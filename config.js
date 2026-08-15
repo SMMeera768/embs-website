@@ -19,6 +19,7 @@ window.EMBS_SOCIAL = {
   instagram: '',
   twitter:   '',
   youtube:   '',
+  spotify:   '',
 };
 
 
