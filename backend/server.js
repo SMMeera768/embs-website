@@ -21,17 +21,44 @@ const contactRoutes      = require('./routes/contactRoutes');
 
 const app = express();
 
-/* ── Core Middleware ─────────────────────────── */
+/* ── CORS ────────────────────────────────────── */
+// Hosts we always trust: the preview/production domains of our static hosts,
+// plus anything explicitly listed in CLIENT_URL (comma-separated).
+const ALLOWED_SUFFIXES = ['.vercel.app', '.netlify.app'];
+
+const ALLOWED_ORIGINS = (process.env.CLIENT_URL || '')
+  .split(',')
+  .map(url => url.trim().replace(/\/$/, ''))
+  .filter(Boolean);
+
+const isLocalhost = (origin) =>
+  /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
+
+const isAllowedOrigin = (origin) => {
+  // Same-origin requests, curl and server-to-server calls send no Origin header.
+  if (!origin) return true;
+
+  const clean = origin.replace(/\/$/, '');
+
+  if (ALLOWED_ORIGINS.includes(clean)) return true;
+  if (isLocalhost(clean)) return true;
+
+  try {
+    const { hostname } = new URL(clean);
+    return ALLOWED_SUFFIXES.some(suffix => hostname.endsWith(suffix));
+  } catch {
+    return false;
+  }
+};
+
 app.use(cors({
-  origin: function(origin, callback) {
-    if (!origin || origin.endsWith('.netlify.app') || origin === process.env.CLIENT_URL) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  // Returning `false` omits the CORS headers so the browser reports a normal
+  // CORS failure. Passing an Error here would surface as a confusing 500.
+  origin: (origin, callback) => callback(null, isAllowedOrigin(origin)),
   credentials: true
 }));
+
+/* ── Core Middleware ─────────────────────────── */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

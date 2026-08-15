@@ -17,7 +17,7 @@ import { apiGet } from './api.js';
 
     article.innerHTML = `
       <div class="blog-card-img-wrap">
-        <img src="${post.coverImage || 'bg image embs/bluebg.jpeg'}" alt="${post.title || ''}" class="blog-card-img" loading="lazy" />
+        <img src="${post.coverImage || 'bg-image-embs/bluebg.jpeg'}" alt="${post.title || ''}" class="blog-card-img" loading="lazy" />
         <span class="blog-card-cat">${post.category || ''}</span>
       </div>
       <div class="blog-card-body">

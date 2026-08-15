@@ -13,7 +13,7 @@
     return `<span style="--h:${heights[i]}%"></span>`;
   }).join('');
 
-  const FALLBACK_IMG = 'bg image embs/bluebg.jpeg';
+  const FALLBACK_IMG = 'bg-image-embs/bluebg.jpeg';
 
   function buildEpisodeCard(ep) {
     const article = document.createElement('article');
