@@ -10,4 +10,8 @@ const announcementSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+/* getAll filters on expiresAt and sorts pinned first. */
+announcementSchema.index({ expiresAt: 1 });
+announcementSchema.index({ pinned: -1, createdAt: -1 });
+
 module.exports = mongoose.model('Announcement', announcementSchema);

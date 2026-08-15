@@ -37,4 +37,9 @@ const projectSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+/* Category chips filter on category; visibility hides drafts. */
+projectSchema.index({ visibility: 1, createdAt: -1 });
+projectSchema.index({ category: 1 });
+projectSchema.index({ featured: 1 });
+
 module.exports = mongoose.model('Project', projectSchema);
