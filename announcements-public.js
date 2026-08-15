@@ -95,8 +95,22 @@
           deadlineEl.style.display = featured.expiresAt ? '' : 'none';
           if (featured.expiresAt) deadlineEl.innerHTML = `${CLOCK_SVG} Deadline: ${fmtDate(featured.expiresAt)}`;
         }
+        /* Fall back to the contact page rather than "#". An announcement
+           without its own application link still needs somewhere to send
+           an interested reader. */
         const applyBtn = featSection.querySelector('.ann-featured-apply');
-        if (applyBtn) applyBtn.href = featured.link || '#';
+        if (applyBtn) {
+          const target = featured.link || 'contact.html';
+          applyBtn.href = target;
+          const external = /^https?:\/\//i.test(target);
+          if (external) {
+            applyBtn.target = '_blank';
+            applyBtn.rel = 'noopener';
+          } else {
+            applyBtn.removeAttribute('target');
+            applyBtn.removeAttribute('rel');
+          }
+        }
       }
     } catch {
       grid.innerHTML = `<p class="embs-empty">Failed to load announcements.</p>`;
