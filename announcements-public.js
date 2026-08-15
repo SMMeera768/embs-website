@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const API_BASE = window.EMBS_API_BASE || 'https://embs-website.onrender.com/api';
+  const API_BASE = window.EMBS_API_BASE;
 
   const CLOCK_SVG = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M12 7v5l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`;
 

@@ -2,7 +2,7 @@
 (function () {
   'use strict';
 
-  const API_BASE = window.EMBS_API_BASE || 'https://embs-website.onrender.com/api';
+  const API_BASE = window.EMBS_API_BASE;
   const CARDS_PER_PAGE = 9;
   let currentPage  = 1;
   let activeFilter = 'all';
