@@ -42,6 +42,21 @@ const JUNK_EVENTS = [
   { _id: '6a68be338f1924249c1ab55e', title: 'BioTech Innovation Summit', description: 'dhidhfuhieufhqeiufhiqufiuefhefhoeufqofqeoufhoqufhqohfo' },
 ];
 
+/* The announcements collection holds eight keyboard-mash records from the same
+   testing session. They are all past their expiry date, so the API filters
+   them out and both the ticker and the announcements page render empty.
+   Clearing them lets the collection seed like the other empty ones. */
+const JUNK_ANNOUNCEMENTS = [
+  { _id: '6a68b1f68f1924249c1ab52a', title: 'jdldjljfl' },
+  { _id: '6a68bf9a8f1924249c1ab5a8', title: 'jdldjljfl' },
+  { _id: '6a68c0008f1924249c1ab5ae', title: 'chjbdcbjcnjc' },
+  { _id: '6a68c00e8f1924249c1ab5b7', title: 'jdldjljfl' },
+  { _id: '6a68c00e8f1924249c1ab5b9', title: 'jdldjljfl' },
+  { _id: '6a68c00e8f1924249c1ab5bd', title: 'jdldjljfl' },
+  { _id: '6a68c00e8f1924249c1ab5bf', title: 'jdldjljfl' },
+  { _id: '6a68c0bf8f1924249c1ab5d3', title: 'fhfuhofuhouhotihtoi' },
+];
+
 /* ── Demo content ───────────────────────────────────────────── */
 
 const blogs = [
@@ -228,8 +243,14 @@ const announcements = [
 
 const log = (...args) => console.log(...args);
 
+/* On a dry run nothing is actually deleted, so a collection that the cleanup
+   step would empty still reports its old count. Subtracting the pending
+   removals keeps the preview honest about what --apply would do. */
+const pendingRemovals = {};
+
 async function seedIfEmpty(Model, label, docs) {
-  const existing = await Model.countDocuments();
+  const stored = await Model.countDocuments();
+  const existing = APPLY ? stored : stored - (pendingRemovals[label] || 0);
 
   if (existing > 0) {
     log(`  SKIP  ${label.padEnd(14)} already has ${existing} document(s) — left untouched`);
@@ -246,42 +267,52 @@ async function seedIfEmpty(Model, label, docs) {
   return docs.length;
 }
 
-async function cleanJunkEvents() {
-  log('\nCleaning up test events');
+/* Deletes the listed records, but only after re-checking that each one still
+   matches the fields we recorded. If the content changed since this script was
+   written we skip it rather than risk deleting something real. */
+async function cleanJunk(Model, label, expectedDocs, extraCheck) {
+  log(`\nCleaning up test ${label}`);
   let removed = 0;
 
-  for (const expected of JUNK_EVENTS) {
-    const doc = await Event.findById(expected._id);
+  for (const expected of expectedDocs) {
+    const doc = await Model.findById(expected._id);
 
     if (!doc) {
       log(`  SKIP  ${expected._id} — not found (already removed?)`);
       continue;
     }
 
-    // Guard: only delete if it still looks like the record we identified.
-    const matches =
-      doc.title === expected.title &&
-      (doc.description || '') === expected.description;
+    const matches = doc.title === expected.title &&
+                    (extraCheck ? extraCheck(doc, expected) : true);
 
     if (!matches) {
       log(`  SKIP  ${expected._id} — content changed since this script was written, not deleting`);
-      log(`        title=${JSON.stringify(doc.title)} description=${JSON.stringify((doc.description || '').slice(0, 40))}`);
+      log(`        title=${JSON.stringify(doc.title)}`);
       continue;
     }
 
     if (!APPLY) {
-      log(`  WOULD delete ${expected._id} — "${doc.title}" (${doc.description ? 'gibberish description' : 'empty description'})`);
+      log(`  WOULD delete ${expected._id} — "${doc.title}"`);
       removed++;
       continue;
     }
 
-    await Event.deleteOne({ _id: expected._id });
+    await Model.deleteOne({ _id: expected._id });
     log(`  OK    deleted ${expected._id} — "${doc.title}"`);
     removed++;
   }
 
-  const left = await Event.countDocuments();
-  log(`  ${removed} test event(s) ${APPLY ? 'removed' : 'would be removed'}; ${APPLY ? left : left - removed} would remain`);
+  pendingRemovals[label] = removed;
+
+  const left = await Model.countDocuments();
+  log(`  ${removed} test ${label} ${APPLY ? 'removed' : 'would be removed'}; ${APPLY ? left : left - removed} would remain`);
+  return removed;
+}
+
+async function cleanAllJunk() {
+  await cleanJunk(Event, 'events', JUNK_EVENTS,
+    (doc, expected) => (doc.description || '') === expected.description);
+  await cleanJunk(Announcement, 'announcements', JUNK_ANNOUNCEMENTS);
 }
 
 async function seedContent() {
@@ -314,8 +345,10 @@ async function seedContent() {
       ? '\n*** APPLY MODE — changes will be written ***'
       : '\n*** DRY RUN — nothing will be changed. Re-run with --apply to write. ***');
 
+    /* Cleanup runs first on purpose: the announcements collection is entirely
+       junk, and it has to be emptied before the seeder will populate it. */
+    if (!SEED_ONLY)  await cleanAllJunk();
     if (!CLEAN_ONLY) await seedContent();
-    if (!SEED_ONLY)  await cleanJunkEvents();
 
     log(APPLY ? '\nDone.' : '\nDry run complete. Re-run with --apply to make these changes.');
   } catch (err) {
