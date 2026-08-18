@@ -4,6 +4,8 @@ Website for the IEEE Engineering in Medicine and Biology Society student chapter
 
 It is a multi-page website with a matching admin panel, so chapter content (events, members, projects, blogs, podcasts, gallery, achievements, announcements) can be updated from a browser without editing any code.
 
+> **Taking over this project?** Start with [HANDOFF.md](HANDOFF.md) for the deploy steps and outstanding items, then come back here for the details.
+
 ---
 
 ## Table of contents
